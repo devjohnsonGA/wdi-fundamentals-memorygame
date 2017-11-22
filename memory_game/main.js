@@ -20,6 +20,7 @@ var cards = [
     cardImage: "images/king-of-diamonds.png"
   }
 ];
+
 var cardsInPlay = [];
 
 // check for a match
@@ -28,34 +29,56 @@ var checkForMatch = function () {
 
   if (cardsInPlay[0] === cardsInPlay[1]) {
 
-    console.log("You found a match!");
+    alert("You found a match!");
   } else {
-    console.log("Sorry, try again!");
-
+    alert("Sorry, try again!");
   }
 };
 
 
+var flipCard = function () {
+  // Get the data-id of card
+  cardId = this.getAttribute('data-id');
+  console.log(cardId);
 
-var flipCard = function (cardId) {
+  // Add card to array of cards 
+  cardsInPlay.push(cards[cardId].card);
 
-  console.log("User flipped " + cards[cardId].rank);
+  // Display the card's image
+  this.setAttribute('src', cards[cardId].cardImage);
 
-  cardsInPlay.push(cards[cardId].rank);
-
-    // Display the image path in the console
-  console.log(cards[cardId].cardImage)
-
-  // Display the suit in the console
-  console.log(cards[cardId].suit)
-
-  // check how many cards played
+  // Check to see how many cards have been played
   if (cardsInPlay.length === 2) {
-
+  
     checkForMatch();
+    
+    cardsInPlay = [];
   }
 };
 
-// test
-flipCard(0);
-flipCard(2);
+// Function that will create your board
+var createBoard = function () {
+  // Loop through your cards array 
+  for (var i = 0; i < cards.length; i++) {
+    // Create an img element 
+    var cardElement = document.createElement("img");
+
+    // Set attribute to display the card
+    cardElement.setAttribute("src", "images/back.png");
+
+    cardElement.setAttribute('data-id', i);
+
+    // Add an event listener  
+    // the function flipCard will be executed
+    cardElement.addEventListener('click', flipCard);
+
+    // Append the card to the board
+    document.getElementById('game-board').appendChild(cardElement);
+
+  }
+
+};
+
+// Call the createBoard function 
+createBoard();
+
